@@ -14,6 +14,35 @@
     <h2 class="card-title">This is the card name</h2>
     <p class="card-description">This is the card description</p>
   </div>
+  <p>Let's see what it looks like:</p>
+  <div id="collections"></div>
+
+
+  <script>
+    fetch('http://192.168.1.236/collections') // Ensure this is the correct IP address
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+        return response.json();
+      })
+      .then(data => {
+        const collectionsDiv = document.getElementById('collections');
+        data.collections.forEach(collection => {
+          const collectionDiv = document.createElement('div');
+          collectionDiv.className = "card";
+          collectionDiv.innerHTML = `<h2 class="card-title">${collection.name}</h2>`;
+          collection.elements.forEach(element => {
+            const elementDiv = document.createElement('p');
+            elementDiv.innerHTML = `Element: ${element.name}, Type: ${element.raw_element}, Settings: ${element.settings.join(', ')}`;
+            collectionDiv.appendChild(elementDiv);
+          });
+          collectionsDiv.appendChild(collectionDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching collections:', error));
+  </script>
+
 
 </body>
 </html>
