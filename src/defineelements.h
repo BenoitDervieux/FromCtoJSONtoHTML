@@ -1,0 +1,10 @@
+#define RAW_ELEMENT1    1
+#define RAW_ELEMENT2    2
+#define RAW_ELEMENT3    3
+#define RAW_ELEMENT4    4
+#define RAW_ELEMENT5    5
+#define RAW_ELEMENT6    6
+#define RAW_ELEMENT7    7
+#define RAW_ELEMENT8    8
+#define RAW_ELEMENT9    9
+#define RAW_ELEMENT10   10
