@@ -7,7 +7,7 @@
 #include <ArduinoJson.h>
 #include "listCollection.h"
 #include "../.variables/variables.h" //Modify path according to your need
-#include "putvariables.h"
+// #include "putvariables.h"
 
 const char* ssid; 
 const char* password;
