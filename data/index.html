@@ -19,7 +19,8 @@
 
 
   <script>
-    fetch('http://192.168.1.236/collections') // Ensure this is the correct IP address
+
+    fetch('http://192.168.1.236/api/collections') // Ensure this is the correct IP address
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok ' + response.statusText);
@@ -30,11 +31,14 @@
         const collectionsDiv = document.getElementById('collections');
         data.collections.forEach(collection => {
           const collectionDiv = document.createElement('div');
+          collectionDiv.onclick = function() {
+            location.href = `/collection?name=${collection.name}`;
+          };
           collectionDiv.className = "card";
-          collectionDiv.innerHTML = `<h2 class="card-title">${collection.name}</h2>`;
+          collectionDiv.innerHTML = `<h2 class="card-title" ">${collection.name}</h2>`;
           collection.elements.forEach(element => {
             const elementDiv = document.createElement('p');
-            elementDiv.innerHTML = `Element: ${element.name}, Type: ${element.raw_element}, Settings: ${element.settings.join(', ')}`;
+            elementDiv.innerHTML = `Element: ${element.name}, Settings: ${element.settings.join(', ')}`;
             collectionDiv.appendChild(elementDiv);
           });
           collectionsDiv.appendChild(collectionDiv);

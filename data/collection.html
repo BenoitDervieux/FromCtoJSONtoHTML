@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Collection Details</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>From JSON to HTML - The collections</h1>
+  <p>The idea here is to fetch the data from a specific collection to display them in cards</p>
+  <div class="card">
+    <h2 class="card-title">This is the card name</h2>
+    <p class="card-description">This is the card description</p>
+  </div>
+  <p>Let's see what it looks like:</p>
+  <div id="collection-details"></div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const collectionName = urlParams.get('name');
+
+    fetch(`/api/collection?name=${collectionName}`)
+      .then(response => {
+        if(!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+          return response.json();
+        })
+      //.then(data => {
+        //console.log("The whole data inside the collection is: ", data);
+        //data.collection.forEach(collection => {
+          //console.log("For each in the collection 1st degree : ", collection);
+          //const collectionDetailsDiv = document.getElementById('collection-details');
+          //collectionDetailsDiv.innerHTML = `<h2>${data.name}</h2>`;
+          //data.elements.forEach(element => {
+            //const elementDiv = document.createElement('div');
+            //elementDiv.className = 'element';
+            //elementDiv.innerHTML = `<p>Element: ${element.name}, Type: ${element.type}, Settings: ${element.settings.join(', ')}</p>`;
+            //collectionDetailsDiv.appendChild(elementDiv);
+          //});
+        //})
+      //})
+      .then(data => {
+        const collectionsDiv = document.getElementById('collection-details');
+        data.collections.forEach(collection => {
+          // Here is for each collection but we have only 1 collection
+          const collectionDiv = document.createElement('div');
+          collectionsDiv.innerHTML = `<h2>${collection.name}</h2>`
+          collection.elements.forEach(element => {
+            const elementDiv = document.createElement('div');
+            elementDiv.className = 'card';
+            elementDiv.innerHTML = `<h3 class="card-title" ">${element.name}</h3>`;
+            element.settings.forEach(setting => {
+              const settingsDiv = document.createElement('p');
+              settingsDiv.innerHTML = `Settings: ${setting}`;
+              elementDiv.appendChild(settingsDiv);
+           })
+            collectionDiv.appendChild(elementDiv);
+          });
+          collectionsDiv.appendChild(collectionDiv);
+        });
+      })
+      .catch(error => console.error('Error fetching collection details:', error));
+  </script>
+</body>
+</html>
