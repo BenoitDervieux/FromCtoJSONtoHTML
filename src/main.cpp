@@ -6,6 +6,7 @@
 #include "SPIFFS.h"
 #include <ArduinoJson.h>
 #include "listCollection.h"
+// #include "listElements.h"
 #include "../.variables/variables.h" //Modify path according to your need
 // #include "putvariables.h"
 
@@ -46,8 +47,14 @@ void setup() {
       request->send(SPIFFS, "/style.css", "text/css");
     });
 
+    // Here it prints a special collection
     server.on("/collection", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send(SPIFFS, "/collection.html", "text/html");
+    });
+
+    // Here it prints a special collection
+    server.on("/elements", HTTP_GET, [](AsyncWebServerRequest *request){
+      request->send(SPIFFS, "/elements.html", "text/html");
     });
 
     // Route to serve the collections as JSON
@@ -93,8 +100,6 @@ void setup() {
     // API endpoint to get collection data
     server.on("/api/collection", HTTP_GET, [](AsyncWebServerRequest *request){
         if (request->hasParam("name")) {
-            Serial.println("We can get the request name here");
-            Serial.println(request->getParam("name")->value());
             DynamicJsonDocument doc(2048);
             JsonArray collectionsArray = doc.createNestedArray("collections");
             // Iterate through all the collections
@@ -137,6 +142,32 @@ void setup() {
         } else {
         request->send(400, "application/json", "{\"error\":\"No id provided\"}");
         }
+    });
+
+    // API endpoint to get collection data
+    server.on("/api/elements", HTTP_GET, [](AsyncWebServerRequest *request){
+        DynamicJsonDocument doc(2048); // Adjust size as needed
+        JsonArray effectsArray = doc.createNestedArray("elements");
+
+        // Iterate through all the elements up until there is the end
+        for (int j = 0; j < sizeof(elements) / sizeof(Element); ++j) {
+            if (elements[j].name == nullptr) break; // Stop at the end marker
+            // Then create new Object
+            JsonObject effect = effectsArray.createNestedObject();
+            effect["name"] = elements[j].name;
+            effect["elements"] = elements[j].raw_element;
+            JsonArray settingsArray = effect.createNestedArray("settings");
+
+            for (int k = 0; k < sizeof(elements[j].settings) / sizeof(int); ++k) {
+            if (elements[j].settings[k] == 0) break; // Stop at the end marker
+            settingsArray.add(elements[j].settings[k]);
+            }
+        }
+        // Convert the JSON document to a string
+        // Send 200 OK
+        String jsonString;
+        serializeJson(doc, jsonString);
+        request->send(200, "application/json", jsonString);
     });
 
     // Start server

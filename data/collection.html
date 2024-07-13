@@ -25,20 +25,6 @@
         }
           return response.json();
         })
-      //.then(data => {
-        //console.log("The whole data inside the collection is: ", data);
-        //data.collection.forEach(collection => {
-          //console.log("For each in the collection 1st degree : ", collection);
-          //const collectionDetailsDiv = document.getElementById('collection-details');
-          //collectionDetailsDiv.innerHTML = `<h2>${data.name}</h2>`;
-          //data.elements.forEach(element => {
-            //const elementDiv = document.createElement('div');
-            //elementDiv.className = 'element';
-            //elementDiv.innerHTML = `<p>Element: ${element.name}, Type: ${element.type}, Settings: ${element.settings.join(', ')}</p>`;
-            //collectionDetailsDiv.appendChild(elementDiv);
-          //});
-        //})
-      //})
       .then(data => {
         const collectionsDiv = document.getElementById('collection-details');
         data.collections.forEach(collection => {

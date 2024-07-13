@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Effects</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>From JSON to HTML - All the elements</h1>
+  <p>The idea here is to fetch the data from all the elements and to display them in cards like this: </p>
+  <div class="card">
+    <h2 class="card-title">This is the effect name name</h2>
+    <p class="card-description">This is the effect setting 1</p>
+    <p class="card-description">This is the effect setting 2</p>
+  </div>
+  <p>Let's see what it looks like:</p>
+  <div id="elements-details"></div>
+
+  <script>
+    fetch(`http://192.168.1.236/api/elements`)
+      .then(response => {
+        if(!response.ok) {
+          throw new Error('Network response was not ok ' + response.statusText);
+        }
+          return response.json();
+        })
+      .then(data => {
+        const elementsDiv = document.getElementById('elements-details');
+        console.log(data);
+          data.elements.forEach(element => {
+            const elementDiv = document.createElement('div');
+            elementDiv.className = 'card';
+            elementDiv.innerHTML = `<h2 class="card-title" ">${element.name}</h2>`;
+            element.settings.forEach(setting => {
+              const settingsDiv = document.createElement('p');
+              settingsDiv.innerHTML = `Settings: ${setting}`;
+              elementDiv.appendChild(settingsDiv);
+           })
+           elementsDiv.appendChild(elementDiv);
+          });
+      })
+      .catch(error => console.error('Error fetching collection details:', error));
+  </script>
+</body>
+</html>
