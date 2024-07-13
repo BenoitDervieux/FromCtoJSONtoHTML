@@ -11,7 +11,7 @@ This project demonstrates how to manage unique elements organized into collectio
 ## Features
 
 - **Element and Collection Management:** Define unique elements and group them into collections in C.
-- **Dynamic Web Page Generation:** Automatically generate and display collections and their elements on a web page (for now, only collections but we can imagine to add more features later).
+- **Dynamic Web Page Generation:** Automatically generate and display collections, link to those collections and list of elements on a web page.
 - **JSON Data Handling:** Use JSON for efficient data transfer between the server and the client.
 
 ## How It Works
